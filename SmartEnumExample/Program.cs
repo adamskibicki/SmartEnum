@@ -8,7 +8,8 @@ namespace SmartEnumExample
         {
             Soldier,
             ToughSoldier,
-            Captain
+            Captain,
+            Boss
         }
 
         public class Enemy
@@ -32,6 +33,9 @@ namespace SmartEnumExample
                     case EnemyType.Captain:
                         MaxHp = 300;
                         break;
+                    case EnemyType.Boss:
+                        MaxHp = 300;
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(type), type, null);
                 }
@@ -47,6 +51,8 @@ namespace SmartEnumExample
                         return "This is tough soldier.";
                     case EnemyType.Captain:
                         return "This is captain.";
+                    case EnemyType.Boss:
+                        return "This is boss.";
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
