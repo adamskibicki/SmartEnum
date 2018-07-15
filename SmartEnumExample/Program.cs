@@ -1,17 +1,63 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartEnumExample
 {
     class Program
     {
+        public enum EnemyType
+        {
+            Soldier,
+            ToughSoldier,
+            Captain
+        }
+
+        public class Enemy
+        {
+            public EnemyType Type { get; }
+
+            public int MaxHp { get; }
+
+            public Enemy(EnemyType type)
+            {
+                Type = type;
+
+                switch (type)
+                {
+                    case EnemyType.Soldier:
+                        MaxHp = 100;
+                        break;
+                    case EnemyType.ToughSoldier:
+                        MaxHp = 200;
+                        break;
+                    case EnemyType.Captain:
+                        MaxHp = 300;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                }
+            }
+
+            public string GetDescription()
+            {
+                switch (Type)
+                {
+                    case EnemyType.Soldier:
+                        return "This is soldier.";
+                    case EnemyType.ToughSoldier:
+                        return "This is tough soldier.";
+                    case EnemyType.Captain:
+                        return "This is captain.";
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Console.ReadKey();
+            Enemy newEnemy = new Enemy(EnemyType.Soldier);
+
+            Console.WriteLine(newEnemy.GetDescription());
         }
     }
 }
