@@ -4,12 +4,21 @@ namespace SmartEnumExample
 {
     class Program
     {
-        public enum EnemyType
+        public sealed class EnemyType
         {
-            Soldier,
-            ToughSoldier,
-            Captain,
-            Boss
+            public static readonly EnemyType Soldier = new EnemyType(100, "This is soldier.");
+            public static readonly EnemyType ToughSoldier = new EnemyType(200, "This is tough soldier.");
+            public static readonly EnemyType Captain = new EnemyType(300, "This is captain.");
+            public static readonly EnemyType Boss = new EnemyType(500, "This is boss.");
+
+            public string Description { get; }
+            public int MaxHp { get; }
+
+            private EnemyType(int maxHp, string description)
+            {
+                MaxHp = maxHp;
+                Description = description;
+            }
         }
 
         public class Enemy
@@ -20,42 +29,13 @@ namespace SmartEnumExample
 
             public Enemy(EnemyType type)
             {
+                MaxHp = type.MaxHp;
                 Type = type;
-
-                switch (type)
-                {
-                    case EnemyType.Soldier:
-                        MaxHp = 100;
-                        break;
-                    case EnemyType.ToughSoldier:
-                        MaxHp = 200;
-                        break;
-                    case EnemyType.Captain:
-                        MaxHp = 300;
-                        break;
-                    case EnemyType.Boss:
-                        MaxHp = 300;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
-                }
             }
 
             public string GetDescription()
             {
-                switch (Type)
-                {
-                    case EnemyType.Soldier:
-                        return "This is soldier.";
-                    case EnemyType.ToughSoldier:
-                        return "This is tough soldier.";
-                    case EnemyType.Captain:
-                        return "This is captain.";
-                    case EnemyType.Boss:
-                        return "This is boss.";
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                return Type.Description;
             }
         }
 
@@ -63,7 +43,25 @@ namespace SmartEnumExample
         {
             Enemy newEnemy = new Enemy(EnemyType.Soldier);
 
+            if (newEnemy.Type == EnemyType.Soldier)
+            {
+                Console.WriteLine("This is simple solder - no threat.");
+            }
+
+
             Console.WriteLine(newEnemy.GetDescription());
+
+
+
+            switch (newEnemy.Type)
+            {
+                case var enemyType when enemyType == EnemyType.Captain:
+                    Console.WriteLine("This is captain - it will be hard.");
+                    break;
+                case var enemyType when enemyType == EnemyType.Boss:
+                    Console.WriteLine("This is boss - run ASAP!");
+                    break;
+            }
         }
     }
 }
